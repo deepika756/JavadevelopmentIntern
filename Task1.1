@@ -1,0 +1,23 @@
+import java.util.Scanner;
+public class PalindromeChecker 
+{
+	public static void main(String[] args) 
+	{
+        Scanner sc= new Scanner(System.in);
+        System.out.print("Enter a word or phrase: ");
+        String a= sc.nextLine();
+        if (isPalindrome(a)) 
+        {
+            System.out.println("palindrome");
+        } 
+        else 
+        {
+            System.out.println("not a palindrome");
+        }
+    }
+    public static boolean isPalindrome(String a) 
+    {
+    	String cleanedStr = a.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
+        return cleanedStr.equals(new StringBuilder(cleanedStr).reverse().toString());
+    }
+}
