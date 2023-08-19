@@ -1,0 +1,107 @@
+import java.util.Scanner;
+public class TicTacToeGame {
+    private static final int BOARD_SIZE = 3;
+    private static char[][] board = new char[BOARD_SIZE][BOARD_SIZE];
+    private static char currentPlayer = 'X';
+
+    public static void main(String[] args) 
+    {
+        Scanner sc= new Scanner(System.in);
+        boolean continuePlaying = true;
+        while (continuePlaying) 
+        {
+            initializeBoard();
+            boolean gameOver = false;
+            while (!gameOver) 
+            {
+                displayBoard();
+                int row, col;
+                do 
+                {
+                    System.out.println("Player " + currentPlayer + ", enter your move (row and column):");
+                    row = sc.nextInt();
+                    col = sc.nextInt();
+                } 
+                while (!isValidMove(row, col) || !isCellEmpty(row, col));
+                board[row][col] = currentPlayer;
+                gameOver = checkForWin() || checkForDraw();
+                if (!gameOver) 
+                {
+                    currentPlayer = (currentPlayer == 'X') ? 'O' : 'X';
+                }
+            }
+
+            displayBoard();
+            System.out.println((checkForDraw()) ? "It's a draw!" : "Player " + currentPlayer + " wins!");
+            System.out.print("Do you want to play another round? (y/n): ");
+            String playAgain = sc.next().toLowerCase();
+            continuePlaying = playAgain.equals("y");
+        }
+        System.out.println("Thanks for playing!");
+    }
+
+    private static void initializeBoard() {
+        for (int i = 0; i < BOARD_SIZE; i++) {
+            for (int j = 0; j < BOARD_SIZE; j++) {
+                board[i][j] = '-';
+            }
+        }
+        currentPlayer = 'X';
+    }
+
+    private static void displayBoard() {
+        System.out.println("Current board:");
+        for (int i = 0; i < BOARD_SIZE; i++) {
+            for (int j = 0; j < BOARD_SIZE; j++) {
+                System.out.print(board[i][j] + " ");
+            }
+            System.out.println();
+        }
+    }
+
+    private static boolean isValidMove(int row, int col) {
+        return row >= 0 && row < BOARD_SIZE && col >= 0 && col < BOARD_SIZE;
+    }
+
+    private static boolean isCellEmpty(int row, int col) {
+        return board[row][col] == '-';
+    }
+
+    private static boolean checkForWin() {
+        return checkRows() || checkColumns() || checkDiagonals();
+    }
+
+    private static boolean checkRows() {
+        for (int i = 0; i < BOARD_SIZE; i++) {
+            if (board[i][0] != '-' && board[i][0] == board[i][1] && board[i][1] == board[i][2]) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static boolean checkColumns() {
+        for (int j = 0; j < BOARD_SIZE; j++) {
+            if (board[0][j] != '-' && board[0][j] == board[1][j] && board[1][j] == board[2][j]) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static boolean checkDiagonals() {
+        return (board[0][0] != '-' && board[0][0] == board[1][1] && board[1][1] == board[2][2]) ||
+               (board[0][2] != '-' && board[0][2] == board[1][1] && board[1][1] == board[2][0]);
+    }
+
+    private static boolean checkForDraw() {
+        for (int i = 0; i < BOARD_SIZE; i++) {
+            for (int j = 0; j < BOARD_SIZE; j++) {
+                if (board[i][j] == '-') {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+}
