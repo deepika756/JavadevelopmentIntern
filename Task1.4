@@ -1,0 +1,58 @@
+import java.util.Random;
+import java.util.Scanner;
+public class RandomPasswordGenerator {
+    public static void main(String[] args) {
+        System.out.println("Random Password Generator");
+        Scanner sc= new Scanner(System.in);
+        
+        System.out.print("Enter the desired length of the password: ");
+        int length = sc.nextInt();
+        
+        System.out.print("Include numbers? (y/n): ");
+        boolean useNumbers = sc.next().equalsIgnoreCase("y");
+        
+        System.out.print("Include lowercase letters? (y/n): ");
+        boolean useLowercase = sc.next().equalsIgnoreCase("y");
+        
+        System.out.print("Include uppercase letters? (y/n): ");
+        boolean useUppercase = sc.next().equalsIgnoreCase("y");
+        
+        System.out.print("Include special characters? (y/n): ");
+        boolean useSpecial = sc.next().equalsIgnoreCase("y");
+        
+        String password = generatePassword(length, useNumbers, useLowercase, useUppercase, useSpecial);
+        System.out.println("Generated password: " + password);
+    }
+    
+    public static String generatePassword(int length, boolean useNumbers, boolean useLowercase, boolean useUppercase, boolean useSpecial) {
+        String characters = "";
+        
+        if (useNumbers) {
+            characters += "0123456789";
+        }
+        if (useLowercase) {
+            characters += "abcdefghijklmnopqrstuvwxyz";
+        }
+        if (useUppercase) {
+            characters += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        }
+        if (useSpecial) {
+            characters += "!@#$%^&*()-_=+[]{}|;:',.<>?";
+        }
+        
+        if (characters.isEmpty()) {
+            return "Cannot generate password without any character types.";
+        }
+        
+        Random random = new Random();
+        StringBuilder password = new StringBuilder();
+        
+        for (int i = 0; i < length; i++) {
+            int randomIndex = random.nextInt(characters.length());
+            password.append(characters.charAt(randomIndex));
+        }
+        
+        return password.toString();
+    }
+}
+
